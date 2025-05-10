@@ -70,7 +70,7 @@ Development was done on Windows, and all training was done on Google Colab T4.
   - `resnet_sse_arc.py` - ResNet with both sSE and ArcFace loss
   - `resnet_sse.py` - ResNet with sSE
   - `resnet.py` - Standard ResNet
-- `logs` - The log folders for each dataset
+- `logs/` - The log folders for each dataset
 - `compare_resnets.py` - Trains all models on the provided datasets
 - `dataloader.py` - Loads the datasets from PyTorch
 - `requirements.txt` - The required libraries to install to run the project
