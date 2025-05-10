@@ -95,7 +95,7 @@ def run_experiment(dataset_name, device, epochs=5):
     names = ["Standard", "sSE", "ArcFace", "sSE+ArcFace"]
     arcface_flags = [False, False, True, True]
     # Prepare log directory
-    log_dir = f"logs_{dataset_name}"
+    log_dir = f"logs/logs_{dataset_name}"
     os.makedirs(log_dir, exist_ok=True)
     all_logs = {}
     for i, (model, optimizer, criterion, name, use_arcface) in enumerate(zip(models_list, optimizers, criterions, names, arcface_flags)):  # noqa
@@ -148,7 +148,7 @@ def plot_metrics(all_logs, dataset_name, log_dir):
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Train and evaluate various ResNet models.')
     parser.add_argument('--datasets', nargs='+', type=str, 
-                        default=["MNIST", "FashionMNIST", "Flowers102", "CIFAR10", "CIFAR100"],
+                        default=["MNIST", "FashionMNIST", "CIFAR10", "CIFAR100"],
                         help='List of datasets to test (e.g., MNIST FashionMNIST CIFAR10)')
     parser.add_argument('--epochs', type=int, default=5,
                         help='Number of epochs to train')
