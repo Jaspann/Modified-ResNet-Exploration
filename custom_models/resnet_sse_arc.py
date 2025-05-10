@@ -7,11 +7,11 @@ from custom_models.components.arc_face_head import ArcFaceHead
 
 
 class ResNet18_sSE_ArcFace(nn.Module):
-    def __init__(self, num_classes):
+    def __init__(self, num_classes, num_channels):
         super().__init__()
         self.backbone = models.resnet18(weights=None)
         self.backbone.conv1 = nn.Conv2d(
-            1, 64, kernel_size=7, stride=2, padding=3, bias=False)
+            num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False)
         self.backbone.fc = nn.Identity()
         self.sse1 = sSE_Block(64)
         self.sse2 = sSE_Block(128)

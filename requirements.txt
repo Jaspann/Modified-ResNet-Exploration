@@ -5,3 +5,4 @@ torchaudio
 numpy
 seaborn
 matplotlib
+scipy

@@ -6,11 +6,11 @@ from custom_models.components.sse_block import sSE_Block
 
 
 class ResNet18_sSE(nn.Module):
-    def __init__(self, num_classes):
+    def __init__(self, num_classes, num_channels):
         super().__init__()
         self.backbone = models.resnet18(weights=None)
         self.backbone.conv1 = nn.Conv2d(
-            1, 64, kernel_size=7, stride=2, padding=3, bias=False)
+            num_channels, 64, kernel_size=7, stride=2, padding=3, bias=False)
         self.backbone.fc = nn.Linear(self.backbone.fc.in_features, num_classes)
         # Add sSE after each layer
         self.sse1 = sSE_Block(64)

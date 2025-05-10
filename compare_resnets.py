@@ -1,3 +1,5 @@
+# flake8: noqa: E501
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -6,6 +8,7 @@ import random
 import os
 import json
 import matplotlib.pyplot as plt
+import argparse
 
 from custom_models.resnet_sse import ResNet18_sSE
 from custom_models.resnet_arc import ResNet18_ArcFace
@@ -68,22 +71,22 @@ def test(model, device, test_loader, criterion, use_arcface=False):
 
 def run_experiment(dataset_name, device, epochs=5):
     print(f"\n===== Dataset: {dataset_name} =====")
-    train_loader, test_loader, _in_channels, num_classes = get_dataloaders(dataset_name) # noqa
+    train_loader, test_loader, in_channels, num_classes = get_dataloaders(dataset_name) # noqa
     results = {}
     # Model 1: Standard ResNet18
-    model1 = get_standard_resnet18(num_classes).to(device)
+    model1 = get_standard_resnet18(num_classes, in_channels).to(device)
     optimizer1 = optim.Adam(model1.parameters(), lr=0.001, weight_decay=0.0001)
     criterion1 = nn.CrossEntropyLoss()
     # Model 2: ResNet18 + sSE
-    model2 = ResNet18_sSE(num_classes).to(device)
+    model2 = ResNet18_sSE(num_classes, in_channels).to(device)
     optimizer2 = optim.Adam(model2.parameters(), lr=0.001, weight_decay=0.0001)
     criterion2 = nn.CrossEntropyLoss()
     # Model 3: ResNet18 + ArcFace
-    model3 = ResNet18_ArcFace(num_classes).to(device)
+    model3 = ResNet18_ArcFace(num_classes, in_channels).to(device)
     optimizer3 = optim.Adam(model3.parameters(), lr=0.001, weight_decay=0.0001)
     criterion3 = nn.CrossEntropyLoss()
     # Model 4: ResNet18 + sSE + ArcFace
-    model4 = ResNet18_sSE_ArcFace(num_classes).to(device)
+    model4 = ResNet18_sSE_ArcFace(num_classes, in_channels).to(device)
     optimizer4 = optim.Adam(model4.parameters(), lr=0.001, weight_decay=0.0001)
     criterion4 = nn.CrossEntropyLoss()
     models_list = [model1, model2, model3, model4]
@@ -142,15 +145,27 @@ def plot_metrics(all_logs, dataset_name, log_dir):
         plt.close()
 
 
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='Train and evaluate various ResNet models.')
+    parser.add_argument('--datasets', nargs='+', type=str, 
+                        default=["MNIST", "FashionMNIST", "Flowers102"],
+                        help='List of datasets to test (e.g., MNIST FashionMNIST CIFAR10)')
+    parser.add_argument('--epochs', type=int, default=5,
+                        help='Number of epochs to train')
+    parser.add_argument('--seed', type=int, default=42,
+                        help='Random seed for reproducibility')
+    return parser.parse_args()
+
+
 def main():
-    set_seed(42)
+    args = parse_arguments()
+    set_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    datasets_to_test = ["MNIST", "FashionMNIST"]
     all_results = {}
-    for dataset in datasets_to_test:
-        all_results[dataset] = run_experiment(dataset, device, epochs=5)
+    for dataset in args.datasets:
+        all_results[dataset] = run_experiment(dataset, device, epochs=args.epochs)
     print("\n===== Summary =====")
-    for dataset in datasets_to_test:
+    for dataset in args.datasets:
         print(f"\n{dataset}:")
         for name, acc in all_results[dataset].items():
             print(f"{name}: {acc:.4f}")

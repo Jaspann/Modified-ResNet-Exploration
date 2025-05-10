@@ -28,6 +28,19 @@ def get_dataloaders(dataset_name, batch_size=128):
             DATA_LOC, train=False, download=True, transform=transform)
         in_channels = 1
         num_classes = 10
+    elif dataset_name == 'Flowers102':
+        transform = transforms.Compose([
+            transforms.Resize((32, 32)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                 std=[0.229, 0.224, 0.225])
+        ])
+        train_set = datasets.Flowers102(
+            DATA_LOC, split="train", download=True, transform=transform)
+        test_set = datasets.Flowers102(
+            DATA_LOC, split="test", download=True, transform=transform)
+        in_channels = 3
+        num_classes = 102
     else:
         raise ValueError('Unknown dataset')
     train_loader = DataLoader(
