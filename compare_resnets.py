@@ -71,23 +71,23 @@ def test(model, device, test_loader, criterion, use_arcface=False):
 
 def run_experiment(dataset_name, device, epochs=5):
     print(f"\n===== Dataset: {dataset_name} =====")
-    train_loader, test_loader, in_channels, num_classes = get_dataloaders(dataset_name) # noqa
+    train_loader, test_loader, in_channels, num_classes, lr = get_dataloaders(dataset_name) # noqa
     results = {}
     # Model 1: Standard ResNet18
     model1 = get_standard_resnet18(num_classes, in_channels).to(device)
-    optimizer1 = optim.Adam(model1.parameters(), lr=0.001, weight_decay=0.0001)
+    optimizer1 = optim.Adam(model1.parameters(), lr, weight_decay=0.0001)
     criterion1 = nn.CrossEntropyLoss()
     # Model 2: ResNet18 + sSE
     model2 = ResNet18_sSE(num_classes, in_channels).to(device)
-    optimizer2 = optim.Adam(model2.parameters(), lr=0.001, weight_decay=0.0001)
+    optimizer2 = optim.Adam(model2.parameters(), lr, weight_decay=0.0001)
     criterion2 = nn.CrossEntropyLoss()
     # Model 3: ResNet18 + ArcFace
     model3 = ResNet18_ArcFace(num_classes, in_channels).to(device)
-    optimizer3 = optim.Adam(model3.parameters(), lr=0.001, weight_decay=0.0001)
+    optimizer3 = optim.Adam(model3.parameters(), lr, weight_decay=0.0001)
     criterion3 = nn.CrossEntropyLoss()
     # Model 4: ResNet18 + sSE + ArcFace
     model4 = ResNet18_sSE_ArcFace(num_classes, in_channels).to(device)
-    optimizer4 = optim.Adam(model4.parameters(), lr=0.001, weight_decay=0.0001)
+    optimizer4 = optim.Adam(model4.parameters(), lr, weight_decay=0.0001)
     criterion4 = nn.CrossEntropyLoss()
     models_list = [model1, model2, model3, model4]
     optimizers = [optimizer1, optimizer2, optimizer3, optimizer4]
@@ -148,7 +148,7 @@ def plot_metrics(all_logs, dataset_name, log_dir):
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Train and evaluate various ResNet models.')
     parser.add_argument('--datasets', nargs='+', type=str, 
-                        default=["MNIST", "FashionMNIST", "Flowers102"],
+                        default=["MNIST", "FashionMNIST", "Flowers102", "CIFAR10", "CIFAR100"],
                         help='List of datasets to test (e.g., MNIST FashionMNIST CIFAR10)')
     parser.add_argument('--epochs', type=int, default=5,
                         help='Number of epochs to train')
