@@ -1,6 +1,6 @@
 # Modified ResNet Exploration
 
-Tests sSE and ArcFace loss on ResNet for classical object recognition tasks.
+Tests sSE and ArcFace loss on ResNet for classical object classification tasks.
 
 Original Inspiration from [A Face Recognition Algorithm Based on Improved Resnet](https://drpress.org/ojs/index.php/fcis/article/view/1100) by Jing et al. 2022
 
