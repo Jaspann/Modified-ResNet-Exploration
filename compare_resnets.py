@@ -1,5 +1,6 @@
 # flake8: noqa: E501
 
+from typing import Dict, Tuple
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -17,8 +18,13 @@ from custom_models.resnet import get_standard_resnet18
 from dataloader import get_dataloaders
 
 
-# ---- Training and Evaluation ----
-def set_seed(seed=42):
+def set_seed(seed:int = 42) -> None:
+    """
+    Sets the seed for the random number generators.
+
+    Parameters:
+        seed (int, optional): The value to set the seed to. Defaults to 42
+    """
     torch.manual_seed(seed)
     np.random.seed(seed)
     random.seed(seed)
@@ -27,7 +33,28 @@ def set_seed(seed=42):
 
 
 def train_one_epoch(
-        model, device, train_loader, optimizer, criterion, use_arcface=False):
+        model: nn.Module, 
+        device: torch.device, 
+        train_loader: torch.utils.data.DataLoader, 
+        optimizer: optim.Adam,
+        criterion: nn.CrossEntropyLoss, 
+        use_arcface: bool = False) -> Tuple[float, float]:
+    """
+    Runs a epoch of training on the model.
+
+    Parameters:
+        model (nn.Module): The model that is to be trained.
+        device (torch.device): Device to run the models on (CPU or GPU).
+        train_loader (torch.utils.data.DataLoader): The PyTorch dataloader.
+        optimizer (optim.Adam): The optimizer for the model.
+        criterion (nn.CrossEntropyLoss): The loss function of the model.
+        use_arcface (bool, optional): A flag for how the model should be ran based on the 
+        requirements in ArcFace loss.
+        
+    Returns:
+        float: The training loss.
+        float: The training accuracy.
+    """
     model.train()
     running_loss = 0.0
     correct = 0
@@ -49,7 +76,27 @@ def train_one_epoch(
     return running_loss / total, correct / total
 
 
-def test(model, device, test_loader, criterion, use_arcface=False):
+def test(
+        model: nn.Module, 
+        device: torch.device, 
+        test_loader: torch.utils.data.DataLoader, 
+        criterion: nn.CrossEntropyLoss, 
+        use_arcface: bool = False) -> Tuple[float, float]:
+    """
+    Runs the test set on the model.
+
+    Parameters:
+        model (nn.Module): The model that is to be tested.
+        device (torch.device): Device to run the models on (CPU or GPU).
+        test_loader (torch.utils.data.DataLoader): The PyTorch dataloader.
+        criterion (nn.CrossEntropyLoss): The loss function of the model.
+        use_arcface (bool, optional): A flag for how the model should be ran based on the 
+        requirements in ArcFace loss.
+        
+    Returns:
+        float: The test loss.
+        float: The test accuracy.
+    """
     model.eval()
     test_loss = 0
     correct = 0
@@ -69,7 +116,18 @@ def test(model, device, test_loader, criterion, use_arcface=False):
     return test_loss / total, correct / total
 
 
-def run_experiment(dataset_name, device, epochs=5):
+def run_experiment(dataset_name: str, device: torch.device, epochs: int = 5) -> Dict[str, float]:
+    """
+    Runs all the models on the provided dataset and saves the data to the log
+
+    Parameters:
+        dataset_name (str): Name of the dataset to use for training and testing
+        device (torch.device): Device to run the models on (CPU or GPU)
+        epochs (int, optional): Number of training epochs. Defaults to 5
+        
+    Returns:
+        Dict[str, float]: Dictionary containing final test accuracies for each model variant
+    """
     print(f"\n===== Dataset: {dataset_name} =====")
     train_loader, test_loader, in_channels, num_classes, lr = get_dataloaders(dataset_name) # noqa
     results = {}
@@ -127,7 +185,15 @@ def run_experiment(dataset_name, device, epochs=5):
     return results
 
 
-def plot_metrics(all_logs, dataset_name, log_dir):
+def plot_metrics(all_logs: dict, dataset_name: str, log_dir: str) -> None:
+    """
+    Plots the testing and training accuracy and loss for each model and saves plots as PNGs.
+
+    Parameters:
+        all_logs (dict): The data of the tests.
+        dataset_name (str): The name of the dataset to log.
+        log_dir (str): The path to where the images should be saved to.
+    """
     metrics = ["train_acc", "test_acc", "train_loss", "test_loss"]
     for metric in metrics:
         plt.figure(figsize=(8, 5))
@@ -145,7 +211,13 @@ def plot_metrics(all_logs, dataset_name, log_dir):
         plt.close()
 
 
-def parse_arguments():
+def parse_arguments() -> argparse.Namespace:
+    """
+    Small function used to parse the arguments inputted when running the file.
+
+    Returns:
+        argparse.NameSpace: The arguments as variables inside an object.
+    """
     parser = argparse.ArgumentParser(description='Train and evaluate various ResNet models.')
     parser.add_argument('--datasets', nargs='+', type=str, 
                         default=["MNIST", "FashionMNIST", "CIFAR10", "CIFAR100"],
@@ -158,6 +230,10 @@ def parse_arguments():
 
 
 def main():
+    """
+    The main function of the file, running all tests passed in 
+    as arguments, or all tests if the command line argument was omitted.
+    """
     args = parse_arguments()
     set_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

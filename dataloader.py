@@ -1,8 +1,25 @@
+from typing import Tuple
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 
 
-def get_dataloaders(dataset_name, batch_size=128):
+def get_dataloaders(dataset_name: str, batch_size: int = 128) -> Tuple[DataLoader, DataLoader, int, int, float]:  # noqa
+    """
+    Given the name of the dataset, downloads the data from PyTorch
+    and returns the dataset and metadata needed for processing.
+
+    Parameters:
+        dataset_name (str): The name of the dataset to use.
+        batch_size (int, optional): the batch size to process the data in. 
+        Defaults to 128
+
+    Returns:
+        torch.utils.data.DataLoader: The data loader for the training set.
+        torch.utils.data.DataLoader: The data loader for the testing set.
+        int: The number of color channels of the images in the dataset.
+        int: The number of classes in the dataset.
+        float: The learning rate expected for the dataset.
+    """
     DATA_LOC = './data'
     if dataset_name == 'MNIST':
         transform = transforms.Compose([
