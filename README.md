@@ -7,10 +7,10 @@ Original Inspiration from [A Face Recognition Algorithm Based on Improved Resnet
 ## Results
 ### MNIST
 #### Accuracy
-- Standard ResNet Test Acc: `0.4089`
-- sSE ResNet Test Acc: `0.4127`
-- ArcFace Loss ResNet Test Acc: `0.9904`
-- sSE + ArcFace Loss ResNet Test Acc: `0.986`
+- Standard ResNet Test Acc: `0.991`
+- sSE ResNet Test Acc: `0.9898`
+- ArcFace Loss ResNet Test Acc: `0.9813`
+- sSE + ArcFace Loss ResNet Test Acc: `0.9696`
 
 #### Loss
 
@@ -40,10 +40,10 @@ Original Inspiration from [A Face Recognition Algorithm Based on Improved Resnet
 
 ### CIFAR100
 #### Accuracy
-- Standard ResNet Test Acc: `0.991`
-- sSE ResNet Test Acc: `0.9898`
-- ArcFace Loss ResNet Test Acc: `0.9813`
-- sSE + ArcFace Loss ResNet Test Acc: `0.9696`
+- Standard ResNet Test Acc: `0.4089`
+- sSE ResNet Test Acc: `0.4127`
+- ArcFace Loss ResNet Test Acc: `0.9904`
+- sSE + ArcFace Loss ResNet Test Acc: `0.986`
 
 #### Loss
 
