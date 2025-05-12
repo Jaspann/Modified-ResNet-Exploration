@@ -6,46 +6,46 @@ Original Inspiration from [A Face Recognition Algorithm Based on Improved Resnet
 
 ## Results
 ### MNIST
-#### Accuracy
-- Standard ResNet Test Acc: `0.991`
-- sSE ResNet Test Acc: `0.9898`
-- ArcFace Loss ResNet Test Acc: `0.9813`
-- sSE + ArcFace Loss ResNet Test Acc: `0.9696`
+#### Test Accuracy
+- Standard ResNet: `0.991`
+- With sSE: `0.9898`
+- With ArcFace Loss: `0.9813`
+- With sSE + ArcFace Loss: `0.9696`
 
-#### Loss
+#### Training Loss
 
 <img src="logs/logs_MNIST/MNIST_train_loss.png" width="640" height="400" alt="Loss of model variants for MNIST">
 
 ### Fashion-MNIST
-#### Accuracy
-- Standard ResNet Test Acc: `0.9034`
-- sSE ResNet Test Acc: `0.904`
-- ArcFace Loss ResNet Test Acc: `0.8315`
-- sSE + ArcFace Loss ResNet Test Acc: `0.8422`
+#### Test Accuracy
+- Standard ResNet: `0.9034`
+- With sSE: `0.904`
+- With ArcFace Loss: `0.8315`
+- With sSE + ArcFace Loss: `0.8422`
 
-#### Loss
+#### Training Loss
 
 <img src="logs/logs_FashionMNIST/FashionMNIST_train_loss.png" width="640" height="400" alt="Loss of model variants for Fashion-MNIST">
 
 ### CIFAR10
-#### Accuracy
-- Standard ResNet Test Acc: `0.7195`
-- sSE ResNet Test Acc: `0.7333`
-- ArcFace Loss ResNet Test Acc: `0.9952`
-- sSE + ArcFace Loss ResNet Test Acc: `0.9846`
+#### Test Accuracy
+- Standard ResNet: `0.7195`
+- With sSE: `0.7333`
+- With ArcFace Loss: `0.9952`
+- With sSE + ArcFace Loss: `0.9846`
 
-#### Loss
+#### Training Loss
 
 <img src="logs/logs_CIFAR10/CIFAR10_train_loss.png" width="640" height="400" alt="Loss of model variants for CIFAR10">
 
 ### CIFAR100
-#### Accuracy
-- Standard ResNet Test Acc: `0.4089`
-- sSE ResNet Test Acc: `0.4127`
-- ArcFace Loss ResNet Test Acc: `0.9904`
-- sSE + ArcFace Loss ResNet Test Acc: `0.986`
+#### Test Accuracy
+- Standard ResNet: `0.4089`
+- With sSE: `0.4127`
+- With ArcFace Loss: `0.9904`
+- With sSE + ArcFace Loss: `0.986`
 
-#### Loss
+#### Training Loss
 
 <img src="logs/logs_CIFAR100/CIFAR100_train_loss.png" width="640" height="400" alt="Loss of model variants for CIFAR100">
 
